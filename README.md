@@ -8,11 +8,29 @@ The image sets up the TeamCity server to
 
 When running TeamCity as a docker container, it is highly recommended you separate (externalise) the data directory (see [Data Directory](https://confluence.jetbrains.com/display/TCD9/TeamCity+Data+Directory)) and use a different container or externally hosted database.
 
-## How to use this container
+## Installation
 
-You can run this container (in it's simplest form), where the data directory is internal to the container and you intend to use the local HSQLDB database, using the following command;
+1. Install [Docker](https://www.docker.com/).
 
-```console
+2. Download [automated build](https://registry.hub.docker.com/u/richardkdrew/teamcity/) from public [Docker Hub Registry](https://registry.hub.docker.com/):
+
+```sh
+docker pull richardkdrew/teamcity
+```
+
+OR
+
+Build a local image from the Dockerfile source:
+
+```sh
+docker build -t="richardkdrew/teamcity" github.com/richardkdrew/docker-teamcity
+```
+
+## How to use this image
+
+You can run a container from this image (in it's simplest form), where the data directory is internal to the container and you intend to use the local HSQLDB database, using the following command;
+
+```sh
 docker run -d --name teamcity -p 0.0.0.0:8111:8111 richardkdrew/teamcity
 ```
 
@@ -22,23 +40,23 @@ However, I would recommend externalising the data directory (exposed by this ima
 
 Using a folder on the host mounted as the data directory volume with the following command;
 
-```console
+```sh
 docker run -d --name teamcity -p 0.0.0.0:8111:8111 -v /path-on-my-machine/teamcity-data:/var/lib/teamcity richardkdrew/teamcity
 ```
 
-Where _'/path-on-my-machine/teamcity-data'_ is the folder on the host and _/var/lib/teamcity_ is the location in the container it is mapped to (see [Docker Volumes](https://docs.docker.com/userguide/dockervolumes/) for more info).
+Where _/path-on-my-machine/teamcity-data_ is the folder on the host and _/var/lib/teamcity_ is the location in the container it is mapped to (see [Docker Volumes](https://docs.docker.com/userguide/dockervolumes/) for more info).
 
 OR
 
 Using a data-only container as the data directory volume with the following command;
 
-```console
+```sh
 docker run -d --name teamcity -p 0.0.0.0:8111:8111 --volumes-from teamcity-data richardkdrew/teamcity
 ```
 
-Where _'teamcity-data'_ is the name of the data-only container. This assumes you have already set up a data-only container i.e.
+Where _teamcity-data_ is the name of the data-only container. This assumes you have already set up a data-only container i.e.
 
-```console
+```sh
 docker run --name teamcity-data -v /var/lib/teamcity debian:jessie /bin/false
 ```
 
