@@ -23,7 +23,7 @@ OR
 Build a local image from the Dockerfile source:
 
 ```sh
-docker build -t="richardkdrew/teamcity" github.com/richardkdrew/docker-teamcity
+docker build -t richardkdrew/teamcity github.com/richardkdrew/docker-teamcity
 ```
 
 ## How to use this image
